@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:widgets/src/providers/menu_provider.dart';
+import 'package:widgets/src/utils/icono_string_util.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -15,13 +16,11 @@ class HomePage extends StatelessWidget {
   Widget _lista() {
     return FutureBuilder(
       future: menuProvider.cargarData(),
-      //  initialData: [],
+        initialData: [],
       builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-        print("builder");
-        print(snapshot.data);
 
         return ListView(
-          children: _listaItems(snapshot.data),
+          children: _listaItems(context, snapshot.data),
         );
       },
     );
@@ -29,15 +28,15 @@ class HomePage extends StatelessWidget {
 
   }
 
-  List<Widget> _listaItems( List<dynamic> data) {
+  List<Widget> _listaItems(context, List<dynamic> data) {
    final List<Widget> opciones = [];
    data.forEach((element) {
      final widgetTemp = ListTile(
        title: Text(element['texto']),
-       leading: Icon(Icons.add, color: Colors.blue,),
+       leading: getIcon(element['icon']),
          trailing: Icon(Icons.add, color: Colors.blue,),
        onTap: () {
-
+        Navigator.pushNamed(context, element['ruta']);
        },
      );
      opciones..add(widgetTemp)
